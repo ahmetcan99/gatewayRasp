@@ -52,4 +52,3 @@ def stop_mqtt():
 
 if __name__ == "__main__":
     main()
-    

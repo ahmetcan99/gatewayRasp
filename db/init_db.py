@@ -24,6 +24,15 @@ cursor.execute("""
                     FOREIGN KEY (meter_id) REFERENCES meters(meter_id) ON DELETE CASCADE
                 )
                 """)
+cursor.execute("""
+                CREATE TABLE IF NOT EXISTS readings(
+                    reading_id NVARCHAR(36) PRIMARY KEY,
+                    photo_id NVARCHAR(36) NOT NULL,
+                    read_value TEXT NOT NULL,
+                    date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (photo_id) REFERENCES photos_taken(photo_id) ON DELETE CASCADE
+                )
+                """)
 
 conn.commit()
 conn.close()

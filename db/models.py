@@ -58,14 +58,24 @@ def get_photos_by_meter(meter_id: str) -> List[Tuple[int, str, str]]:
     conn.close()
     return photos
 
-def get_last_photo_by_meter(meter_id: str) -> Tuple[int, str, str]:
+def get_last_photo_by_meter(photo_id: str) -> Tuple[int, str, str]:
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("""
-                   SELECT * FROM photos_taken WHERE meter_id = ?
+                   SELECT * FROM photos_taken WHERE photo_id = ?
                    ORDER BY date DESC
                    LIMIT 1
-                   """,(meter_id,))
+                   """,(photo_id,))
     photo = cursor.fetchone()
     conn.close()
     return photo
+
+def get_reading(photo_id: str) -> Tuple[int, str, float]:
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT * FROM readings WHERE photo_id = ?", (photo_id,))
+    reading = cursor.fetchone()
+    
+    conn.close()
+    return reading

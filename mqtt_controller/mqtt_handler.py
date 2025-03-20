@@ -1,5 +1,5 @@
 from .process_message import Process_Message
-from .config import BROKER, PORT, TOPIC, USER_NAME, PASSWORD
+from .config import TOPIC
 
 
 process = Process_Message()

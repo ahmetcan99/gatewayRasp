@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, Form
 from . import photo_folder
-from db.models import (get_all_meters, add_photo, get_photos_by_meter, get_last_photo_by_meter)
+from db.models import (get_all_meters, add_photo, get_photos_by_meter, get_last_photo_by_meter, get_reading)
 import os
 import uuid
 import aiofiles
@@ -49,3 +49,15 @@ async def list_photos(meter_uuid):
 async def last_photo(meter_uuid):
     photo = get_last_photo_by_meter(meter_uuid)
     return {"photo_id": photo["photo_id"], "photo_path": photo["photo_path"], "date": photo["date"]}
+
+@router.get("/reading/{photo_id}")
+async def get_photo_reading(photo_id: str):
+    reading = get_reading(photo_id)
+    if reading:
+        return {
+            "photo_id": reading["photo_id"],
+            "meter_uuid": reading["meter_uuid"],
+            "reading_value": reading["reading_value"],
+            "date": reading["date"]
+        }
+    return {"error": "Reading not found"}
