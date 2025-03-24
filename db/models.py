@@ -1,6 +1,7 @@
 from . import DB_PATH
 from typing import List, Tuple
 import sqlite3
+import uuid
 import os
 
 def add_new_meter(meter_uuid, meter_mac, meter_description):
@@ -79,3 +80,17 @@ def get_reading(photo_id: str) -> Tuple[int, str, float]:
     
     conn.close()
     return reading
+
+def add_reading(photo_id: str, reading_value: str):
+    reading_uuid = str(uuid.uuid4())
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    try:
+        cursor.execute("INSERT INTO readings (reading_id, photo_id, read_value) VALUES (?, ?, ?)", (reading_uuid, photo_id, reading_value))
+        cursor.execute("UPDATE photos_taken SET processed = 1 WHERE photo_id = ?", (photo_id,))
+        conn.commit()
+        print(f"Reading added for photo {photo_id}: {reading_value}")
+    except sqlite3.IntegrityError:
+        print(f"Reading couldn't be added: {photo_id} already exists.")
+    finally:
+        conn.close()

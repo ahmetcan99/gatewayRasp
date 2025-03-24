@@ -20,6 +20,7 @@ cursor.execute("""
                     photo_id NVARCHAR(36) PRIMARY KEY,
                     meter_id NVARCHAR(36) NOT NULL,
                     photo_path TEXT NOT NULL,
+                    processed INTEGER DEFAULT 0,
                     date DATETIME DEFAULT CURRENT_TIMESTAMP,
                     FOREIGN KEY (meter_id) REFERENCES meters(meter_id) ON DELETE CASCADE
                 )

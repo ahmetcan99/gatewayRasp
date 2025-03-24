@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from restapi.routes import router
 from mqtt_controller.config import BROKER, PORT
 from mqtt_controller.mqtt_handler import on_connect, on_message
+import ocr.ocr
 
 client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 client.username_pw_set("can", "123456")
@@ -17,6 +18,9 @@ fastapi_thread = None
 fastapi_server = None
 
 def main():
+    ocr_thread = threading.Thread(target=ocr.ocr.run, daemon=True)
+    ocr_thread.start()
+
     global fastapi_thread
 
     start_mqtt()

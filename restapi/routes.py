@@ -9,8 +9,6 @@ from datetime import datetime
 router = APIRouter()
 UPLOAD_FOLDER = photo_folder
 
-print(UPLOAD_FOLDER)
-
 @router.get("/list_meters/")
 async def list_meters():
     meters = get_all_meters()
